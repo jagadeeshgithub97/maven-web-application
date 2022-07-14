@@ -26,7 +26,7 @@ stage('Deploy application into Tomcat'){
     }
 }
       
- catch (e){
+ catch(e){
  currentBuild.result = "FAILED"
  throw e
  } finally {
