@@ -27,11 +27,11 @@ stage('Deploy application into Tomcat'){
 }     
 
 catch(e){
-currentBuild.result = "FAILURE"
+currentBuild.currentResult = "FAILURE"
 throw e
 }
 finally{
-slacknotifications(currentBuild.result)
+slacknotifications(currentBuild.currentResult)
 }
     
 }
