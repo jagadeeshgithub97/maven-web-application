@@ -7,6 +7,8 @@ echo "The build number is : ${env.BUILD_NUMBER}"
 echo "The node name is : ${env.NODE_NAME}"
 echo "The Build id is : ${env.BUILD_ID}"
 echo "The build tag is : ${env.BUILD_TAG}"
+try{
+slacknotifications("STARTED")
     
 stage('Getting code from GitHub'){
     git branch: 'development', url: 'https://github.com/jagadeeshgithub97/maven-web-application.git'
@@ -25,7 +27,8 @@ stage('Deploy application into Tomcat'){
     sh " scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@52.66.199.107:/opt/apache-tomcat-9.0.64/webapps/"
     }
 }     
-catch(e){
+}
+    catch(e){
 currentBuild.currentResult = "FAILURE"
 throw e
 }
