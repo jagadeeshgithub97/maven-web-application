@@ -25,9 +25,9 @@ stage('Deploy application into Tomcat'){
     sh " scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@52.66.199.107:/opt/apache-tomcat-9.0.64/webapps/"
     }
 }     
- catch(e) {
- currentBuild.result = "FAILED"
- throw e
+catch(e) {
+currentBuild.result = "FAILED"
+throw e
  } finally {
    slacknotifications(currentBuild.result)
  }
