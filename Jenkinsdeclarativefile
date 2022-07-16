@@ -12,6 +12,7 @@ options {
 }
 
 stages{
+ slacknotifications("STARTED")
     stage('Checkout code'){
         steps{git branch: 'development', url: 'https://github.com/jagadeeshgithub97/maven-web-application.git'}
     }
