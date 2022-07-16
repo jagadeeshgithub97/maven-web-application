@@ -2,6 +2,15 @@ pipeline{
     
 agent any
 tools{maven "maven3.8.6"}
+triggers {
+  pollSCM ('* * * * *')
+  cron ('* * * * *')
+}
+
+options {
+  timestamps()
+}
+
 stages{
     stage('Checkout code'){
         steps{git branch: 'development', url: 'https://github.com/jagadeeshgithub97/maven-web-application.git'}
