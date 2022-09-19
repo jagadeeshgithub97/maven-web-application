@@ -17,6 +17,7 @@ node{
     }
     stage('deploy application as docker container server'){
         sshagent(credentials: ['72194af1-302c-4d99-9ad4-fb08bf137791'], ignoreMissing: 'true' ) {
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.9.209 docker rm -f newcontainer || true "
         sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.9.209 docker run -d -p 8081:8081 --name newcontainer jagadeeshdockerhub/new-web-app:${buildNumber}"
     }
     
