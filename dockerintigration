@@ -1,0 +1,25 @@
+node{
+    def buildNumber= BUILD_NUMBER
+    stage('get code from git'){
+       git 'https://github.com/jagadeeshgithub97/maven-web-application.git'
+    }
+    
+    stage('build the code'){
+        def mavenHome= tool name: "Maven", type: "maven"
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+    stage("build docker image"){
+        sh "docker build -t jagadeeshdockerhub/new-web-app:${buildNumber} ."
+    }
+    stage('docker login and push'){
+        sh "docker login -u jagadeeshdockerhub -p dckr_pat_MVJGocJ0-X_Q5j5pxbbEuRo1sAk "
+        sh "docker push jagadeeshdockerhub/new-web-app:${buildNumber}"
+    }
+    stage('deploy application as docker container server'){
+        sshagent(credentials: ['72194af1-302c-4d99-9ad4-fb08bf137791'], ignoreMissing: 'true' ) {
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.9.209 docker run -d -p 8081:8081 --name newcontainer jagadeeshdockerhub/new-web-app:${buildNumber}"
+    }
+    
+    }
+
+} //node end
