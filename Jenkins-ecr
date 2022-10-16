@@ -1,0 +1,40 @@
+pipeline{
+    agent any
+   
+    tools{
+        maven "maven"
+    }
+   
+    stages{
+        stage('CheckOutCode'){
+            steps{
+                git credentialsId: 'c7062164-2bdc-4ca8-9a30-3d1b200bcc1b', url: 'https://github.com/jagadeeshgithub97/maven-web-application.git'
+            }
+        }
+       
+        stage('BuildingWarFile'){
+            steps{
+                sh "mvn clean package"  
+            }
+        }
+       
+        stage('Building Docker Image'){
+            steps{
+                sh "docker build -t 244750886273.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${BUILD_NUMBER} ."
+                sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 244750886273.dkr.ecr.ap-south-1.amazonaws.com"
+                sh "docker push 244750886273.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${BUILD_NUMBER}"
+            }
+        }
+       
+        stage('Deploy Docker image in Deployment Server'){
+            steps{
+                sshagent(['337990f1-ed6b-496b-aa2c-e8c07bd61444']) {
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.97 docker stop mavenwebapp || true"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.97 docker rm mavenwebapp || true"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.97 aws ecr get-login-password --region ap-south-1 | ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.97 docker login --username AWS --password-stdin 244750886273.dkr.ecr.ap-south-1.amazonaws.com"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.97 docker run -d --name mavenwebapp -p 8080:8080 244750886273.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${BUILD_NUMBER}"
+                }
+            }
+        }
+    }//stages closing
+}//pipeline closing
