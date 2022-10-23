@@ -7,9 +7,9 @@ spec:
   replicas: 2
   strategy:
     type: RollingUpdate
-selector:
-  matchLabels:
-    app: maven
+  selector:
+    matchLabels:
+      app: maven
 template: 
   name: maven-web-app
   labels: 
