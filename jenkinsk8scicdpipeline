@@ -1,0 +1,27 @@
+node{
+    def buildNumber= BUILD_NUMBER
+    stage(' check code from github'){
+        
+        git 'https://github.com/jagadeeshgithub97/maven-web-application.git'
+    }
+    stage('build code'){
+        
+        def mavenHome= tool name: "maven"
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+    stage("build docker image"){
+        sh "docker build -t jagadeeshdockerhub/maven-web-application:${buildNumber} ."
+    }
+    stage('docker login and push'){
+        sh "docker login -u jagadeeshdockerhub -p dckr_pat_F7lFcmp2GJUuisVCzVNx2euZAxI "
+        sh "docker push jagadeeshdockerhub/maven-web-application:${buildNumber}"
+    }
+    stage("Deploy To Kubernetes Cluster"){
+        
+        sh "kubectl apply -f jenkinsk8s.yml"
+    }
+    
+    
+    
+    
+} // node end
