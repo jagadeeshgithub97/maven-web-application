@@ -1,3 +1,5 @@
+// jagadeesh created by own for learning and practice purpose
+
 node{
     def buildNumber= BUILD_NUMBER
     stage(' check code from github'){
