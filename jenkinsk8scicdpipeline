@@ -8,7 +8,7 @@ node{
     }
     stage('build code'){
         
-        def mavenHome= tool name: "maven"
+        def mavenHome= tool name: "maven 3.8.6"
         sh "${mavenHome}/bin/mvn clean package"
     }
     stage("build docker image"){
