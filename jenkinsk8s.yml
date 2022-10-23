@@ -11,9 +11,9 @@ spec:
     matchLabels:
       app: maven
   template: 
-    name: maven-web-app
-    labels: 
-     app: maven
+    metadata:
+      labels: 
+        app: maven
     spec:
       containers:
       - name: maven-container
