@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: maven-container
-        image: jagadeeeshdockerhub/maven-web-application
+        image: jagadeeshdockerhub/maven-web-application
         ports:
         - containerPort: 8080
 ---
