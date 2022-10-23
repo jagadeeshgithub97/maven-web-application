@@ -10,16 +10,16 @@ spec:
   selector:
     matchLabels:
       app: maven
-template: 
-  name: maven-web-app
-  labels: 
-    app: maven
-  spec:
-    containers:
-    - name: maven-container
-      image: jagadeeeshdockerhub/maven-web-application:TAG
-      ports:
-      - containerPort: 8080
+  template: 
+   name: maven-web-app
+    labels: 
+     app: maven
+   spec:
+     containers:
+     - name: maven-container
+       image: jagadeeeshdockerhub/maven-web-application:TAG
+       ports:
+       - containerPort: 8080
 ---
 apiVersion: v1 
 kind: Service
